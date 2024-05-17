@@ -126,7 +126,7 @@ class QuizConsumer(AsyncWebsocketConsumer):
       if self.user_index is not None:
          self.current_question_index = self.user_index.get('current_question_index', 0)
          await self.fetch_questions_to_cache() 
-         await self.send_question()
+         await self.send_questions_periodically()
       else:
          # print('Пользователь не присутствует в группе')
          users_cache_key = f'users_list_{self.room_token}'
