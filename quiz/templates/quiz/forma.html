@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/forma.css' %}">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}">
+    <title>Document</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 10px;
+        }
+        
+        .grid-item {
+            border: 1px solid #000000;
+            color: #000000;
+            padding: 10px;
+        }
+        
+        .questions {
+            grid-column: 1 / span 2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="{% url 'quiz' Group.slug %}"><img src="{% static 'img/logo.png' %}" alt=""></a></div>
+            <ul>
+                <li><a id="test-link" href="{% url 'quiz' Group.slug %}">Тесты</a></li>
+                <li><a href="{% url 'cabin' user.UUID.UUID %}" class="none">Профиль <img class="avatars" src="{{ user.avatar.url }}"  alt="Avatar"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="content">
+        <div class="grid-container">
+            <button id="create-quiz-btn" class="grid-item">Создать квиз</button> <!-- Кнопка создания квиза -->
+            <button id="create-room-btn" class="grid-item">Создать комнату</button> <!-- Кнопка создания комнаты -->
+        </div>
+
+        <div id="quiz-form" style="display: none;"> <!-- Форма создания квиза -->
+            <div class="grid-container">
+                <div class="grid-item">Начало</div>
+                <input type="text" id="start-time" class="grid-item"placeholder="9:20">
+                <div class="grid-item">Тема квиза</div>
+                <input type="text" id="quiz-theme" class="grid-item"  placeholder="Ромашки">
+                <div class="grid-item" placeholder="Количество вопросов">Количество вопросов</div>
+                <input type="number" id="question-count" class="grid-item">
+                <div class="grid-item questions" colspan="2">Вопросы:</div>
+            </div>
+            
+            <div class="grid-container answers">
+                <button id="submit-btn" class="grid-item">Отправить</button>
+            </div>
+        </div>
+        
+        <div id="room-form" style="display: none;"> <!-- Форма создания комнаты -->
+
+        </div>
+    </div>
+    <script src="{% static 'js/cards.js' %}"></script> 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var createQuizBtn = document.getElementById('create-quiz-btn');
+            var createRoomBtn = document.getElementById('create-room-btn');
+            var quizForm = document.getElementById('quiz-form');
+            var roomForm = document.getElementById('room-form');
+
+            createQuizBtn.addEventListener('click', function() {
+                createQuizBtn.style.display = 'none'; // Скрыть кнопку "Создать квиз"
+                quizForm.style.display = 'block'; // Показать форму для создания квиза
+            });
+
+            createRoomBtn.addEventListener('click', function() {
+                // Здесь можно добавить функциональность для создания комнаты
+                // Например, показать форму для создания комнаты или выполнить другие действия
+                console.log('Комната создана');
+            });
+
+            // JavaScript код для работы с формой квиза остается без изменений
+            var menuItems = document.querySelectorAll('nav ul li a');
+            menuItems.forEach(function(item) {
+                item.addEventListener('click', function(event) {
+                    event.preventDefault(); // Предотвращаем переход по ссылке
+                    var questionInput = document.querySelector('.questions input[type="text"]:focus');
+                    if (questionInput) {
+                        questionInput.value = item.textContent.trim(); // Обновляем содержимое вопроса
+                    }
+                });
+            });
+
+            document.getElementById('question-count').addEventListener('change', function() {
+                var questionCount = parseInt(this.value);
+                var questionsContainer = document.querySelector('.questions');
+                questionsContainer.innerHTML = 'Вопросы:';
+                for (var i = 1; i <= questionCount; i++) {
+                    questionsContainer.innerHTML += '<div class="grid-item"><input type="text" placeholder="Вопрос ' + i + '">' +
+                                                    '<div class="answer-options">';
+                    for (var j = 1; j <= 4; j++) {
+                        questionsContainer.innerHTML += '<div class="answer-option">' +
+                                                            '<input type="text" placeholder="Ответ ' + i + '.' + j + '">' +
+                                                            '<input type="checkbox" name="correct-answer-' + i + '" class="correct-answer">' +
+                                                            '<label>Правильный ответ</label>' +
+                                                        '</div>';
+                    }
+                    questionsContainer.innerHTML += '</div></div>';
+                }
+
+                // Добавляем обработчик для чекбоксов правильных ответов
+                var checkboxes = document.querySelectorAll('.correct-answer');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            // Если выбран новый правильный ответ, снимаем выбор с остальных чекбоксов в текущем вопросе
+                            var parentQuestion = this.closest('.grid-item');
+                            var otherCheckboxes = parentQuestion.querySelectorAll('.correct-answer');
+                            otherCheckboxes.forEach(function(cb) {
+                                if (cb !== checkbox) {
+                                    cb.checked = false;
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
+            document.getElementById('submit-btn').addEventListener('click', function() {
+                var startTime = document.getElementById('start-time').value;
+                var quizTheme = document.getElementById('quiz-theme').value;
+                var questionInputs = document.querySelectorAll('.questions input[type="text"]');
+                var questions = [];
+                questionInputs.forEach(function(input) {
+                    questions.push(input.value);
+                });
+
+                // Здесь можно отправить данные на сервер или обработать их каким-либо другим образом
+                console.log('Время начала: ' + startTime);
+                console.log('Тема квиза: ' + quizTheme);
+                console.log('Вопросы и ответы:');
+                questions.forEach(function(question, index) {
+                    console.log('Вопрос ' + Math.floor(index / 4) + 1 + ': ' + question);
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+    var testLink = document.getElementById('test-link');
+    var profileLink = document.getElementById('profile-link');
+
+    testLink.addEventListener('click', function() {
+        // Действия при клике на ссылку "Тесты"
+        window.location.href = "{% url 'cabin' User.UUID.UUID %}";
+    });
+
+    profileLink.addEventListener('click', function() {
+        // Действия при клике на ссылку "Профиль"
+        window.location.href = "{% url 'cabin' User.UUID.UUID %}";
+    });
+});
+
+    </script>
+</body>
+</html>
+

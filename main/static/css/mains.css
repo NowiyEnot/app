@@ -1,0 +1,342 @@
+/* Сброс */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+*{    /*   Универсальный селектор при добавлении отступов общая ширина элемента не увеличивается */
+    box-sizing: border-box;
+}
+body {
+	line-height: 1;
+	font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    background-color: #074947;
+    color: aliceblue;
+    width: 100%;
+    background-image: url("../img/back-main.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a{
+    text-decoration: none;
+}
+/* конец сброса */
+
+header{
+    background-color: #06806A;
+    display: flex;
+    color: aliceblue;
+    position: relative;
+    z-index: 1;
+    position: sticky;
+    top: 0;
+}
+nav a{
+    color: aliceblue;
+}
+nav{
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+nav,ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ul{
+    width: 60%;
+}
+ul li a{
+    display: flex;
+    font-size: 18px;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    position: relative;
+}
+.btns {
+    position: relative;
+    border: none;
+    outline: none;
+    padding: 9px 25px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 60%;
+    margin: 10px auto;
+    text-align: center;
+    color: #23242a;
+    font-size: 1em;
+    font-weight: 500;
+    transition: 0.5s;
+    background-color: #06806A;
+    color: #fff;
+    border: 1px solid #fff;
+}
+.btns:hover{
+    background-color: #36b8a0;
+    color: #fff;
+    border: 1px solid #fff;
+}
+footer{
+    display: flex;
+    background-color: black;
+    color: azure;
+}
+.contents{
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content h1{
+    font-size: 47px;
+    font-weight: bold;
+    letter-spacing: 10px;
+    padding-top: 15%;
+    padding-bottom: 10%;
+    color: #017B65;
+}
+.no{
+    font-size: 27px;
+    padding: 2%;
+    color: #ffffff;
+    background-color: #2daaa6;
+    border-radius: 10px;
+} 
+.card-active{
+	display: flex;
+	width: 100%;
+}
+.card-active-item{
+	width: 80%;
+	background: #017B65;
+    margin:0 auto;
+    height: auto;
+    text-align: center;
+    border-radius: 30px;
+    transition: 0.9s;
+    overflow: hidden;
+}
+.card-active-item:hover,.card-item:hover{
+    background: linear-gradient(180.00deg, rgb(0, 75, 62),rgb(10, 117, 99),rgb(20, 175, 147) 100%);
+}
+.card-active-item h3{
+    font-size: 37px;
+    font-weight: 500;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
+.card-active-item p{
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: 10px;
+    margin-bottom: 10%;
+}
+.card-active-item span{
+    font-size: 27px;
+}
+.btn-card a{
+    color: aliceblue;
+    font-size: 20px;
+    font-weight: 300;
+    padding: 2% 3%;
+    border: 1px solid aliceblue;
+    border-radius: 10px;
+}
+.btn-card{
+    padding-bottom: 8%;
+}
+.card-list{
+    display: flex;
+    width: 100%;
+    margin: 10% auto;
+    overflow: hidden;
+    flex-wrap: wrap;
+    border:3px solid #17B5B0;
+    padding: 2%;
+    border-radius: 20px;
+}
+.card-item{
+    width: 30%;
+	background: #017B65;
+    margin: 1% auto;
+    height: auto;
+    text-align: center;
+    border-radius: 30px;
+    transition: 0.9s;
+    overflow: hidden;
+}
+
+.card-item h3{
+    font-size: 37px;
+    font-weight: 500;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
+.card-item p{
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: 10px;
+    margin-bottom: 10%;
+}
+.card-item span{
+    font-size: 27px;
+}
+ul img{
+    width: 12%;
+    margin-left: 2%;
+}
+ul li a{
+    align-items: center;
+}
+ul li a:hover{
+    text-decoration: underline;
+}
+.logo{
+    width: 5%;
+}
+.mob{
+    display: none;
+}
+.none-mob{
+    display: none;
+}
+@media all and (max-width: 840px){
+    .content h1 {
+        font-size: 35px;
+    }
+}
+@media all and (max-width: 800px){
+    ul{
+        width: 80%;
+    }
+}
+@media all and (max-width: 700px){
+    .card-item h3{
+        font-size: 27px;
+    }
+    .card-item span {
+        font-size: 17px;
+    }
+    .content h1 {
+        letter-spacing: 3px;
+    }
+
+}
+@media all and (max-width: 650px){
+    ul{
+        width: 70%;
+    }
+    .none{
+        display: none;
+    }
+    .none-mob{
+        display: block;
+    }
+}
+@media all and (max-width: 550px){
+    .card-item{
+        width: 45%;
+    }
+    .content h1 {
+        letter-spacing: 1px;
+        font-size: 30px;
+    }
+    .card-active-item{
+        width: 60%;
+    }
+
+}
+@media all and (max-width: 520px){
+    ul li a{
+        font-size: 15px;
+    }
+}
+@media all and (max-width: 450px){
+    .content h1 {
+        letter-spacing: 0px;
+        font-size: 26px;
+    }
+}
+@media all and (max-width: 430px){
+    .none{
+        display: flex;
+    }
+    .none-mob{
+        display: none;
+    }
+}
+@media all and (max-width: 380px){
+    .card-item{
+        width: 80%;
+    }
+    .content h1 {
+        font-size: 20px;
+    }
+    .card-active-item{
+        width: 80%;
+    }
+    .mob img{
+        width: 30%;
+    }
+}
+.avatars {
+    width: 35px;
+    border-radius: 100%;
+    height: 35px;
+}
+.card-active-items{
+    width: 100%;
+    display: flex;
+}
+nav ul.menu-active {
+    background: rgb(23, 181, 176, 0.5);
+}

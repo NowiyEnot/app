@@ -1,0 +1,370 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Circle Movement</title>
+    <link rel="stylesheet" href="{% static 'css/card.css' %}">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/mob.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="#"><img src="{% static 'img/logo.png' %}" alt=""></a></div>
+            <div class="menu-icon">
+                <img src="{% static 'img/hamburger.png' %}" alt="Menu">
+            </div>
+            <ul>
+                {% if user.is_staff %}
+                    <li><a href="{% url 'form' %}">Создание теста</a></li>
+                {% endif %}
+                <li><a href="{% url 'quiz' Group %}">Тесты</a></li>
+                 <li><a href="{% url 'cabin' user.UUID.UUID %}" class="none">Профиль <img class="avatars" src="{{ user.avatar.url }}"  alt="Avatar"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="content">
+            <div id="timer" style="font-size: 150%; margin-top: 2%;"><span>Осталось времени:</span>00:00</div> <!-- Начальное значение таймера -->
+            <div id="questions-container" style="width: 100%;"></div> <!-- Контейнер для вопросов -->
+            <table id="users-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Номер участника</th>
+                        <th>ФИО</th>
+                    </tr>
+                </thead>
+                <tbody id="users-body">
+                </tbody>
+            </table>
+            
+            {% csrf_token %}
+        </div>
+    </main>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/card.js' %}"></script> <!-- Подключаем ваш JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        const room_token = '{{ Room.token }}'; // Проверьте, правильно ли вставляется токен комнаты
+        const socket = new WebSocket(`ws://127.0.0.1:8000/ws/quiz/${room_token}/`);
+    
+        var timerInterval;
+        var answeredQuestion = false;
+        var currentQuestionText = ''; // Сохраняем текст текущего вопроса
+    
+        function formatTime(seconds) {
+            var minutes = Math.floor(seconds / 60);
+            var remainingSeconds = seconds % 60;
+            return (minutes < 10 ? '0' : '') + minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+        }
+    
+        window.addEventListener('beforeunload', async function (e) {
+            console.log('Closing socket connection...');
+            await socket.close();
+            console.log('Socket connection closed.');
+        });
+    
+
+        socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        console.log('Parsed data:', data);
+
+        if (data) {
+            if (data.type === "question" && data.question_text) {
+                console.log('Updating question on the page:', data.question_text);
+                updateQuestionAndAnswers(data);
+            } else if (data.type === "end_of_questions") {
+                console.log('No more questions available.');
+                handleEndOfQuestions(); // Вызываем функцию handleEndOfQuestions
+            } else if (data.type === "users_list") {
+                console.log('Received users list:', data.users);
+
+                // Очищаем текущий список пользователей
+                $('#users-body').empty();
+
+                if (data.users && data.users.length > 0) { // Проверяем, есть ли данные пользователей
+                    // Добавляем каждого пользователя в таблицу
+                    data.users.forEach(function(user, index) {
+                        var row = $('<tr>');
+                        row.append($('<td>').text(index + 1));
+                        row.append($('<td>').text(user.name));
+                        $('#users-body').append(row);
+                    });
+
+                    // Показываем таблицу пользователей
+                    $('#users-table').css('display', 'block');
+                    
+                    // Сбросим таймер проверки данных
+                    clearTimeout(dataCheckTimer);
+                } else {
+                    // Скрываем таблицу пользователей, если данных нет
+                    $('#users-table').css('display', 'none');
+                    
+                    // Запускаем таймер проверки данных
+                    startDataCheckTimer();
+                }
+            } else {
+                console.log('Received invalid data from server:', data);
+            }
+        }
+    };
+
+
+
+
+
+
+    
+        function startTimer(time, questionText) {
+            var secondsLeft = time;
+            $('#timer').html('<span>Осталось времени:</span> ' + formatTime(secondsLeft));
+    
+            timerInterval = setInterval(function() {
+                secondsLeft--;
+                $('#timer').html('<span>Осталось времени:</span> ' + formatTime(secondsLeft));
+    
+                if (secondsLeft <= 0) {
+                    clearInterval(timerInterval);
+                    if (!answeredQuestion) {
+                        submitAnswer(null, currentQuestionText); // Если время вышло и ответ не выбран, отправляем null на сервер
+                        answeredQuestion = true;
+                    }
+                }
+            }, 1000);
+        }
+    
+        function updateQuestionAndAnswers(data) {
+    var $cardContainer = $('<div>').addClass('card-answer');
+    var $questionContainer = $('<div>').addClass('card-question');
+    $questionContainer.append('<h3>' + data.question_text + '</h3>');
+    
+    // Добавляем изображение (картинку), если оно есть
+    if (data.image_url) {
+        var $image = $('<img>').attr('src', data.image_url).addClass('question-image');
+        $questionContainer.append($image);
+    }
+    
+    $cardContainer.append($questionContainer);
+
+    var $answerItems = $('<div>').addClass('card-answer-items');
+    if (data.answers && data.answers.length > 0) {
+        data.answers.forEach(function(answer) {
+            var $answerItem = $('<a>').addClass('card-answer-item').attr('href', '#');
+            var $answerText = $('<p>').text(answer);
+            var $fonDiv = $('<div>').addClass('fon');
+            $answerItem.append($answerText, $fonDiv);
+            $answerItems.append($answerItem);
+        });
+    }
+    $cardContainer.append($answerItems);
+    $('#questions-container').html($cardContainer);
+
+    startTimer(data.time, data.question_text.trim()); // Передаем текст вопроса в функцию startTimer()
+    answeredQuestion = false;
+    currentQuestionText = data.question_text.trim(); // Сохраняем текущий текст вопроса
+
+    // Скрыть таблицу с участниками
+    $('#users-table').css('display', 'none');
+}
+
+function handleEndOfQuestions() {
+    console.log('Quiz completed. Thanks for participating!');
+
+    // Скрыть контейнеры с таймером и вопросами
+    $('#timer').hide();
+    $('#questions-container').hide();
+
+    $.ajax({
+        type: 'GET',
+        url: 'submit_answer/',   
+        success: function(response) {
+            console.log('Результаты теста:', response);
+
+            // Очистить существующую таблицу результатов
+            $('#users-table tbody').empty();
+
+            // Получить информацию о текущем пользователе
+            var currentUserInfo = response.Current_user_info;
+
+            // Создадим объект для хранения уникальных участников и их суммарных баллов
+            var uniqueParticipants = {};
+
+            // Заполнить объект участниками и их суммарными баллами
+            response.Top_players.forEach(function(player) {
+                var fullName = player.first_name + ' ' + player.last_name;
+                // Проверяем, не является ли текущий пользователь этим участником и не добавлен ли он уже в таблицу
+                if ((player.first_name !== currentUserInfo.first_name || player.last_name !== currentUserInfo.last_name) && !(fullName in uniqueParticipants)) {
+                    uniqueParticipants[fullName] = player.total_score;
+                }
+            });
+
+            // Добавляем заголовок "Результаты тестов"
+            $('#users-table').before('<h3>Результаты тестов</h3>');
+
+            // Заполнить таблицу данными о уникальных участниках и их суммарных баллах
+            Object.keys(uniqueParticipants).forEach(function(fullName, index) {
+                var row = $('<tr>');
+                row.append($('<td>').text(index + 1));
+                row.append($('<td>').text(fullName));
+                row.append($('<td>').text(uniqueParticipants[fullName]));
+                $('#users-table tbody').append(row);
+            });
+
+            // Показать таблицу
+            $('#users-table').css('display', 'block');
+
+            // Добавить заголовок "Баллы" в конце таблицы
+            $('thead tr').append('<th>Баллы</th>');
+        },
+        error: function(xhr, errmsg, err) {
+            console.log('Ошибка при получении результатов:', errmsg);
+        }
+    });
+}
+
+
+
+
+    
+
+        var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+        function submitAnswer(selectedOption, questionText) {
+            if (!answeredQuestion) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'submit_answer/',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    data: {
+                        selected_option: selectedOption,
+                        question_text: questionText,
+                        answer_time: $('#timer').text().replace('Осталось времени:', '')
+                    },
+                    success: function(response) {
+                        // Добавляем ваше сообщение в сокет
+                        var message = {
+                            type: 'answer_submitted',
+                            // Дополнительные данные, которые вы хотите отправить, например:
+                            selected_option: selectedOption,
+                            question_text: questionText,
+                            answer_time: $('#timer').text().replace('Осталось времени:', '')
+                        };
+                        socket.send(JSON.stringify(message)); // Отправляем сообщение в сокет
+                        console.log('Ответ отправлен:');
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.log('Ошибка при отправке ответа:', errmsg);
+                    }
+                });
+                answeredQuestion = true;
+            } else {
+                console.log('Ответ на этот вопрос уже был отправлен.');
+            }
+        }
+        
+        function handleEndOfQuestions() {
+        console.log('Quiz completed. Thanks for participating!');
+
+        // Скрыть контейнеры с таймером и вопросами
+        $('#timer').hide();
+        $('#questions-container').hide();
+
+        $.ajax({
+            type: 'GET',
+            url: 'submit_answer/',   
+            success: function(response) {
+                console.log('Результаты теста:', response);
+
+                // Очистить существующую таблицу результатов
+                $('#users-table tbody').empty();
+
+                // Получить информацию о текущем пользователе
+                var currentUserInfo = response.Current_user_info;
+
+                // Создадим объект для хранения уникальных участников и их суммарных баллов
+                var uniqueParticipants = {};
+
+                // Заполнить объект участниками и их суммарными баллами
+                response.Top_players.forEach(function(player) {
+                    var fullName = player.first_name + ' ' + player.last_name;
+                    // Проверяем, не является ли текущий пользователь этим участником и не добавлен ли он уже в таблицу
+                    if ((player.first_name !== currentUserInfo.first_name || player.last_name !== currentUserInfo.last_name) && !(fullName in uniqueParticipants)) {
+                        uniqueParticipants[fullName] = player.total_score;
+                    }
+                });
+
+                // Добавляем заголовок "Результаты тестов"
+                $('#users-table').before('<h3>Результаты тестов</h3>');
+
+                // Заполнить таблицу данными о уникальных участниках и их суммарных баллах
+                Object.keys(uniqueParticipants).forEach(function(fullName, index) {
+                    var row = $('<tr>');
+                    row.append($('<td>').text(index + 1));
+                    row.append($('<td>').text(fullName));
+                    row.append($('<td>').text(uniqueParticipants[fullName]));
+                    $('#users-table tbody').append(row);
+                });
+
+                // Показать таблицу
+                $('#users-table').css('display', 'block');
+
+                // Добавить заголовок "Баллы" в конце таблицы
+                $('thead tr').append('<th>Баллы</th>');
+            },
+            error: function(xhr, errmsg, err) {
+                console.log('Ошибка при получении результатов:', errmsg);
+            }
+        });
+    }
+
+
+        function checkRoomState() {
+        $.ajax({
+            type: 'GET',
+            url: 'check_room_state/{{ room_id }}',  // Замените на ваш URL для проверки состояния комнаты
+            data: {
+                room_id: 'your_room_id'  // Замените на идентификатор вашей комнаты
+            },
+            success: function(response) {
+                if (response.state === 'active') {
+                    console.log('Комната активна.');
+                    // Ваш код для обработки активного состояния комнаты
+
+                    // Останавливаем интервальную проверку, так как комната активна
+                    clearInterval(roomCheckInterval);
+                } else {
+                    console.log('Комната неактивна');
+                    // Ваш код для остановки выполнения операции
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log('Ошибка при проверке состояния комнаты:', errmsg);
+            }
+        });
+    }
+
+// Вызываем функцию для проверки состояния комнаты с интервалом
+var roomCheckInterval = setInterval(checkRoomState, 5000); // Проверка каждые 5 секунд
+
+
+
+
+        $(document).on('click', '.card-answer-item', function(event) {
+            event.preventDefault();
+            var selectedOption = $(this).find('p').text();
+            var questionText = $(this).closest('.card-answer').find('.card-question h3').text().trim();
+
+            if (!answeredQuestion) {
+                submitAnswer(selectedOption, questionText);
+            } else {
+                console.log('Ответ на этот вопрос уже был отправлен.');
+            }
+        });
+
+    });
+
+    </script>   

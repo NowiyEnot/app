@@ -1,0 +1,29 @@
+.categories-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .categories-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .categories-list li {
+    margin-bottom: 10px;
+  }
+  
+  .categories-list li a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .categories-list li a:hover {
+    background-color: #0056b3;
+  }
+  

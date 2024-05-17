@@ -1,0 +1,140 @@
+{% extends 'main/base.html' %}  
+{% load static %}
+
+
+{%block css_reg%} 
+    <link rel="stylesheet" href="{% static 'css/reg.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}">
+    
+{%endblock%}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+{% block content %}
+<div class="body">
+    {% if errors %}
+        <ul class="errorlist">
+            {% for field, error_list in errors.items %}
+                {% for error in error_list %}
+                    <li>{{ field }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="ramka">
+
+        <span class="borderLine"></span>
+        <form action="{% url 'submit_form' %}" method="post">
+            {% csrf_token %}
+            <h2>Регистрация</h2>
+            <div class="input-ramka">
+                <input type="text" name="last_name" required pattern="[a-zA-Z\u0410-\u044F\u0401\u0451]+" title="Фамилия должна содержать только буквы">
+                <span>Фамилия</span>
+                <i></i>
+            </div>
+            <div class="input-ramka">
+                <input type="text" name="first_name" required pattern="[a-zA-Z\u0410-\u044F\u0401\u0451]+" title="Имя должно содержать только буквы">
+                <span>Имя</span>
+                <i></i>
+            </div>
+            <div class="input-ramka">
+                <input type="text" name="surname" required pattern="[a-zA-Z\u0410-\u044F\u0401\u0451]+" title="Отчество должно содержать только буквы">
+                <span>Отчество</span>
+                <i></i>
+            </div>
+            <div class="input-ramka">
+                <input type="text" name="course" maxlength="2" required>
+                <span>Курс</span>
+                <i></i>
+            </div>
+            <div class="input-ramka">
+                <input type="text" id="groupInput" name="group" required maxlength="8" autocomplete="off" oninput="searchGroup()">
+                <span>Группа</span>
+                <i></i>
+            </div>
+            
+            <div id="searchResults" style="display: none;">
+                <!-- Здесь будут отображаться результаты поиска -->
+            </div>
+            <div class="input-ramka">
+                <input type="text" name="email" required title="Почта должна быть действущая для получения письма">
+                <span>Почта</span>
+                <i></i>
+            </div>
+            <div class="input-ramka">
+                <input type="password" name="password" required title="Пароль должен содержать заглавную букву, строчку, спецсимвол и цифру">
+                <span>Пароль</span>
+                <i></i>
+            </div>            
+            <div class="links">
+                <a href="{% url 'autofication' %}" id="auto">Авторизация</a>
+                <div class="password-check"><input type="checkbox" id="showPassword" name="password2">
+                    <label for="showPassword">Показать пароль</label>
+                </div>
+            </div>
+            <input type="submit" value="Регистрация" class="btns">
+        </form>
+    </div>
+</div>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+    function searchGroup() {
+        var groupInput = document.getElementById('groupInput').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/search_group?group=' + groupInput, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.results.length > 0) {
+                        // Очищаем предыдущие результаты
+                        var resultList = document.getElementById('searchResults');
+                        resultList.innerHTML = '';
+
+                        // Создаем элементы для каждого результата
+                        response.results.forEach(function(result) {
+                            var resultItem = document.createElement('div');
+                            resultItem.textContent = result.group_name;
+                            resultItem.classList.add('searchResultItem');
+                            resultList.appendChild(resultItem);
+
+                            // Обработчик щелчка по результату
+                            resultItem.addEventListener('click', function() {
+                                document.getElementById('groupInput').value = result.group_name;
+                                resultList.style.display = 'none';
+                            });
+                        });
+
+                        // Показываем результаты
+                        resultList.style.display = 'block';
+                    } else {
+                        // Если результаты не найдены, скрываем список
+                        document.getElementById('searchResults').style.display = 'none';
+                    }
+                } else {
+                    console.error('Ошибка при выполнении запроса');
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Находим чекбокс "Показать пароль" и поле для ввода пароля
+        let showPasswordCheckbox = document.getElementById('showPassword');
+        let passwordInput = document.querySelector('input[name="password"]');
+
+        // Добавляем обработчик события change к чекбоксу
+        showPasswordCheckbox.addEventListener('change', function() {
+            // Если чекбокс отмечен, меняем тип поля на "text", иначе - на "password"
+            if (this.checked) {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        });
+    });
+
+</script>
+{% endblock %}

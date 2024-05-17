@@ -1,0 +1,37 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz</title>
+<link rel="stylesheet" href="{% static 'css/quiz.css' %}">
+<link rel="icon" href="{% static 'img/favicon.svg' %}">
+</head>
+<body>
+<div class="quiz-container">
+  <h2>Question Title</h2>
+  <div class="question">What is the capital of France?</div>
+  <form class="answers-form">
+    <label class="answer-option">
+      <input type="radio" name="answer" value="paris">
+      Paris
+    </label>
+    <label class="answer-option">
+      <input type="radio" name="answer" value="london">
+      London
+    </label>
+    <label class="answer-option">
+      <input type="radio" name="answer" value="berlin">
+      Berlin
+    </label>
+    <label class="answer-option">
+      <input type="radio" name="answer" value="madrid">
+      Madrid
+    </label>
+  </form>
+  <button id="submit-btn">Submit</button>
+</div>
+</body>
+</html>
+<script src="{% static 'js/cabin.js' %}"></script>

@@ -1,0 +1,131 @@
+/* Сброс */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+*{    /*   Универсальный селектор при добавлении отступов общая ширина элемента не увеличивается */
+    box-sizing: border-box;
+}
+body {
+	line-height: 1;
+	font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    background-color: #074947;
+    color: aliceblue;
+    width: 100%;
+    background-image: url("../img/back-main.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a{
+    text-decoration: none;
+}
+/* конец сброса */
+nav a{
+    color: aliceblue;
+}
+nav{
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+nav,ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ul{
+    width: 60%;
+}
+ul li a{
+    display: flex;
+    font-size: 18px;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+header{
+    background-color: #06806A;
+    display: flex;
+    color: aliceblue;
+    position: relative;
+    z-index: 1;
+    position: sticky;
+    top: 0;
+}
+ul img{
+    width: 12%;
+    margin-left: 2%;
+}
+ul li a{
+    align-items: center;
+}
+ul li a:hover{
+    text-decoration: underline;
+}
+.logo{
+    width: 5%;
+}
+.grid-item{
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.20);
+    backdrop-filter: blur(3px);
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #1dcaaa;
+}
+.circle {
+    position: absolute;
+    pointer-events: none; /* чтобы круги не мешали кликабельным элементам */
+    z-index: -1;
+}
+.avatars {
+    width: 35px;
+    border-radius: 100%;
+    height: 35px;
+}

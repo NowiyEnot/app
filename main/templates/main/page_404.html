@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Страница не найдена</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #06806A;
+    color: #EFF4F3;
+    cursor: none; /* Скрываем системный курсор мыши */
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .content {
+    text-align: center;
+  }
+  h1 {
+    font-size: 100px;
+    margin-bottom: 20px;
+  }
+  p {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  .quiz-btn {
+    display: inline-block;
+    background-color: #4aeccf;
+    color: #06806A;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 20px;
+    transition: background-color 5s, filter 2s; /* Добавляем анимацию для цвета фона и яркости */
+
+}
+
+.quiz-btn:hover {
+    background-color: #017B65;
+    filter: brightness(80%); /* Уменьшаем яркость при наведении */
+    cursor: none; /* Используем стандартный курсор при наведении */
+}
+
+  /* Создаем след за мышью */
+  #mouse-trail {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #4aeccf; /* Цвет следа */
+    transition: width 0.2s, height 0.2s, opacity 1s; /* Плавное исчезновение */
+    pointer-events: none; /* Элемент не должен мешать взаимодействию с другими элементами */
+    z-index: 9999; /* Устанавливаем элемент поверх остального контента */
+    mix-blend-mode: screen; /* Позволяет смешивать цвета следа с цветом фона */
+  }
+
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="content">
+    <h1>404</h1>
+    <p>Упс! Кажется, вы потерялись в лабиринте вопросов и ответов.</p>
+    <p>Но не беспокойтесь, всегда есть возможность начать <a href="/quiz" class="quiz-btn">новый квиз</a> и погрузиться в мир знаний.</p>
+  </div>
+</div>
+
+<!-- Элемент для отображения следа мыши -->
+<div id="mouse-trail"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const mouseTrail = document.getElementById("mouse-trail");
+      
+      function updateMouseTrail(event) {
+        const x = event.clientX;
+        const y = event.clientY;
+        mouseTrail.style.left = x + "px";
+        mouseTrail.style.top = y + "px";
+      }
+      
+      function updateTrailSize(event) {
+        mouseTrail.style.width = "40px";
+        mouseTrail.style.height = "40px";
+        mouseTrail.style.opacity = "0.5";
+      }
+      
+      function restoreTrailSize() {
+        mouseTrail.style.width = "20px";
+        mouseTrail.style.height = "20px";
+        mouseTrail.style.opacity = "0";
+      }
+      
+      document.addEventListener("mousemove", updateMouseTrail);
+      document.addEventListener("mouseenter", updateTrailSize);
+      document.addEventListener("mouseleave", restoreTrailSize);
+    });
+    
+    // Проверяем наличие страницы квиза
+    document.addEventListener("DOMContentLoaded", function() {
+      const quizLink = document.querySelector('.quiz-btn');
+      quizLink.addEventListener('click', function(event) {
+        const quizPageExists = true; // Вставьте здесь проверку на наличие страницы квиза
+        if (!quizPageExists) {
+          event.preventDefault(); // Отменяем переход по ссылке
+          alert('Извините, страница квиза временно недоступна.');
+        }
+      });
+    });
+</script>
+</body>
+</html>

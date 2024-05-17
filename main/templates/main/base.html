@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/mob.css' %}">
+    {%block css_reg%} 
+    {%endblock%}
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text&family=Nunito+Sans:opsz,wght@6..12,200&family=Open+Sans:wght@300&family=Raleway:wght@100&display=swap" rel="stylesheet">
+    <title>{{title}}</title>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo"><a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a></div>
+            <div class="menu-icon">
+                <img src="{% static 'img/hamburger.png' %}" alt="Menu">
+            </div>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'cabin' user.UUID.UUID %}">Профиль</a></li>
+                    <li><a href="{% url 'logout' %}">Выход</a></li>
+                {% else %}
+                    <li><a href="{% url 'registration' %}">Регистрация</a></li>
+                    <li><a href="{% url 'autofication' %}">Вход</a></li>
+                {% endif %}
+                <li><a href="{% if user.is_authenticated %}{% url 'quiz' request.user.group.slug %}{% else %}{% url 'autofication' %}{% endif %}">Пройти тест</a></li>
+            </ul>
+        </nav>
+    </header>
+    {%block content%} 
+    {%endblock%}
+    <footer>
+        <div class="contents">
+            <div class="logo"><img src="{% static 'img/logo.png' %}" alt=""></div>
+            <p>ROOT</p>
+        </div>
+    </footer>
+</body>
+</html>

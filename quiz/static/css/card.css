@@ -1,0 +1,256 @@
+/* Сброс */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+*{    /*   Универсальный селектор при добавлении отступов общая ширина элемента не увеличивается */
+    box-sizing: border-box;
+}
+body {
+	line-height: 1;
+	font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    background-color: #004B3E;
+    color: aliceblue;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a{
+    text-decoration: none;
+}
+/* конец сброса */
+header{
+    background-color: #06806A;
+    display: flex;
+    color: aliceblue;
+    position: relative;
+    z-index: 1;
+    position: sticky;
+    top: 0;
+}
+main{
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+nav a{
+    color: aliceblue;
+}
+nav{
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+nav,ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ul{
+    width: 60%;
+}
+ul li a{
+    display: flex;
+    font-size: 18px;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    position: relative;
+    z-index: 1;
+}
+.content h1{
+    font-size: 47px;
+    font-weight: bold;
+    letter-spacing: 10px;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    color: #fff;
+}
+.card-answer{
+    width: 100%;
+}
+h3{
+    font-size: 37px;
+    font-weight: bold;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    color: #FFF;
+    text-align: center;
+}
+.card-answer-items{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1,5%;
+}
+.card-answer-item{
+    cursor: pointer;
+    width: 22%;
+    margin:0 auto;
+    height: auto;
+    text-align: center;
+    border-radius: 30px;
+    transition: 0.9s;
+    overflow: hidden;
+    border: 2px solid #1dcaaa;
+    box-shadow: 0 0 10px #1dcaaa;
+    height: 200px;
+    color: #fff;
+    position: relative;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.20);
+    backdrop-filter: blur(3px);
+}
+.card-answer-item:active,.fon:active{
+    background-color: #004B3E;
+}
+.card-answer-item p{
+    font-size: 25px;
+    font-weight: 500;
+    color: #fff;
+}
+.fon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit; /* Наследуем радиус скругления от родительского элемента */
+    transition: 0.9s;
+}
+ul img{
+    width: 12%;
+    margin-left: 2%;
+}
+ul li a{
+    align-items: center;
+}
+ul li a:hover{
+    text-decoration: underline;
+}
+.logo{
+    width: 5%;
+}
+.mob{
+    display: none;
+}
+main {
+    position: relative;
+}
+.circle {
+    position: absolute;
+    pointer-events: none; /* чтобы круги не мешали кликабельным элементам */
+}
+.question-text {
+    font-size: 37px;
+    font-weight: bold;
+    letter-spacing: 10px;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    color: #FFF;
+    text-align: center;
+}
+.timer {
+    display: flex;
+    font-size: 20px;
+}
+.timer span{
+    font-size: 20px;
+}
+
+#users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#users-table th, #users-table td {
+    border: 1px solid #004B3E;
+    padding: 8px;
+}
+
+#users-table th {
+    background-color: #111920;
+    color: #fff;
+    border: 1px solid #202932;
+    text-align: left;
+}
+
+#users-body tr {
+    background-color: #2a3138;
+}
+
+#users-body tr:nth-child(even) {
+    background-color: #202932;
+}
+
+#users-body tr:hover {
+    background-color: #097a66;
+}
+.question-image{
+    width: 60%;
+    display: flex;
+    left: 45%;
+    margin: 0 auto;
+    margin-bottom: 5%;
+}
+.avatars {
+    width: 35px;
+    border-radius: 100%;
+}
+@media screen and (max-width: 425px){
+    .card-answer-items{
+        flex-direction: column;
+        gap: 10px;
+    }
+    .card-answer-item{
+        width: 80%;
+        height: 20%;
+    }
+}

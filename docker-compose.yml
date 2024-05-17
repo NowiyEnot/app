@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  django_app:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+    links:
+      - redis
+
+    
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - .:/dаta:/root/redis
+      - /etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=my-password
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16

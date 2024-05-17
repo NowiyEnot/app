@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}  
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="icon" href="{% static 'img/favicon.svg' %}">
+
+{%block content%}
+<div class="body">
+    <div class="bg-img"><img src="{% static 'img/bg.png' %}" alt=""></div>
+    <div class="content">
+        <h1>ПРОЙТИ ТЕСТ</h1>
+        <div class="btn"><a href="{% if user.is_authenticated %}{% url 'quiz' request.user.group.slug %}{% else %}{% url 'autofication' %}{% endif %}">Пройти</a></div>
+    </div>
+</div>
+<script src="{% static 'js/main.js' %}"></script>
+        
+{%endblock%} 

@@ -1,0 +1,8 @@
+.vscode
+.pylintrc
+app/__pycache__
+main/__pycache__
+quiz/__pycache__
+__pycache__
+main\migrations\__pycache__
+data.py

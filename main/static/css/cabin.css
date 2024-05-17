@@ -1,0 +1,438 @@
+/* Сброс */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+*{    /*   Универсальный селектор при добавлении отступов общая ширина элемента не увеличивается */
+    box-sizing: border-box;
+}
+body {
+	line-height: 1;
+	font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    background-color: #074947;
+    color: aliceblue;
+    width: 100%;
+    background-image: url("../img/back-main.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a{
+    text-decoration: none;
+}
+/* конец сброса */
+
+header{
+    background-color: #06806A;
+    display: flex;
+    color: aliceblue;
+    position: relative;
+    z-index: 1;
+    position: sticky;
+    top: 0;
+}
+nav a{
+    color: aliceblue;
+}
+nav{
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+nav,ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ul{
+    width: 60%;
+}
+ul li a{
+    display: flex;
+    font-size: 18px;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    position: relative;
+}
+.btns {
+    position: relative;
+    border: none;
+    outline: none;
+    padding: 9px 25px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 60%;
+    margin: 10px auto;
+    text-align: center;
+    color: #23242a;
+    font-size: 1em;
+    font-weight: 500;
+    transition: 0.5s;
+    background-color: #06806A;
+    color: #fff;
+    border: 1px solid #fff;
+}
+.btns:hover{
+    background-color: #36b8a0;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+.contents{
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content h1{
+    font-size: 47px;
+    font-weight: bold;
+    letter-spacing: 10px;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    color: #017B65;
+}
+.content h3{
+    font-size: 27px;
+    font-weight: bold;
+    padding: 2% 0;
+    color: #017B65;
+}
+.card-active{
+	display: flex;
+	width: 100%;
+}
+.card-active-item{
+	width: 40%;
+	background: #017B65;
+    margin:0 auto;
+    height: auto;
+    text-align: center;
+    border-radius: 30px;
+    transition: 0.9s;
+    overflow: hidden;
+}
+.card-active-item:hover,.card-item:hover{
+    background: linear-gradient(180.00deg, rgb(0, 75, 62),rgb(10, 117, 99),rgb(20, 175, 147) 100%);
+}
+.card-active-item h3{
+    font-size: 37px;
+    font-weight: 500;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
+.card-active-item p{
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: 10px;
+    margin-bottom: 10%;
+}
+.card-active-item span{
+    font-size: 27px;
+}
+.btn-card a{
+    color: aliceblue;
+    font-size: 20px;
+    font-weight: 300;
+    padding: 2% 3%;
+    border: 1px solid aliceblue;
+    border-radius: 10px;
+}
+.btn-card{
+    padding-bottom: 8%;
+}
+
+ul img{
+    width: 12%;
+    margin-left: 2%;
+}
+ul li a{
+    align-items: center;
+}
+ul li a:hover{
+    text-decoration: underline;
+}
+.logo{
+    width: 5%;
+}
+.mob{
+    display: none;
+}
+.user-card {
+    width: 70%;
+    border: 10px solid #4aeccf;
+    border-radius: 5px;
+    padding: 2%;
+    margin: 2%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #017B65;
+    align-items: center; 
+}
+.user-avatar {
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    position: relative;
+}
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.user-info {
+    flex: 1;
+    margin-left: 10%;
+    background-color: #EFF4F3; 
+    border-radius: 20px;
+}
+.user-info p {
+    margin: 10px 0;
+}
+.user-info h3{
+    font-size: 22px;
+    background-color: #C1D1D1;
+    border-radius: 30px;
+    padding-left: 3%;
+    color: #105044;
+    font-weight: 600;
+}
+.user-info p{
+    font-size: 18px;
+    padding-left: 3%;
+    color: #000000;
+}
+.download{
+    border-radius: 20px;
+    padding: 3% 5%;
+    background-color: #074947;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    color: black;
+}
+th {
+    background-color: #f2f2f2;
+    color: black;
+}
+.editable {
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.raiting{
+    background-image: url(../img/yell.png);
+    background-size: 100%;
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    height: 230px;
+    color: #017B65;
+    border: 10px solid #4aeccf;
+    border-radius: 5px;
+    margin: 3%;
+    padding: 20px;
+    min-width: 300px;
+    max-width: 620px;
+    background-color: #fff;
+}
+.raiting-title h4{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: none;
+    border-bottom: 1px solid #000000;;
+    color: #000000;
+}
+.rating-conten-item p,.rating-conten-item span{
+    display: flex;
+    justify-content: center;
+    color: #29313f;
+    font-size: 100%;
+    color: #017B65;
+}
+.rating-conten-item p{
+    color: #EFF4F3;
+    font-size: 42px;
+    font-weight: bold;
+    display: flex;
+    color: #017B65;
+}
+.rating-conten-item span{
+    color: #EFF4F3;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    flex-wrap: wrap;
+    color: #017B65;
+    width: 150px;
+    padding-left: 35px;
+}
+.rating-conten{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+footer{
+    display: flex;
+    background-color: black;
+    color: azure;
+    bottom: 0;
+    width: 100%;
+    bottom: 0;
+}
+
+.avatars {
+    width: 35px;
+    border-radius: 100%;
+    height: 35px;
+}
+.current-user {
+    /* Ваши стили для выделения текущего пользователя */
+    background-color: #d6d3d3; /* Например, изменяем фон на светло-серый */
+}
+
+
+
+#leaderboard-body {
+    color: black;
+    display: flex;
+    flex-direction: column; /* Изменение направления элементов на вертикальное */
+    max-height: 400px; /* Максимальная высота контейнера (вы можете настроить по своему усмотрению) */
+    overflow-y: auto; /* Добавление вертикальной прокрутки в случае необходимости */
+}
+#leaderboard{
+    width: 40%;
+    margin: 2% 0;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 5px 5px 5px #333;
+    border: 1px solid black;
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.group-stream-buttons {
+    display: flex;
+}
+
+.group-button,
+.stream-button {
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: #333;
+    font-size: 16px;
+}
+
+.active {
+    font-weight: bold;
+}
+
+.leaderboard-body {
+    display: flex;
+    flex-direction: column; /* Изменение направления элементов на вертикальное */
+}
+h2 {
+    color: #333;
+    font-weight: bold;
+}
+.leader-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between; /* Располагаем элементы внутри div по краям */
+    align-items: center; /* Выравниваем элементы по вертикали */
+}
+
+.leader-number {
+    font-weight: bold;
+    flex: 0 0 auto; /* Не растягиваем номер и имя */
+}
+
+.leader-name {
+    margin-left: 20px;
+    flex: 1; /* Растягиваем имя на всю доступную ширину */
+}
+
+.leader-score {
+    font-weight: bold;
+}
+.leader-info{
+    display: flex;
+    align-items: center;
+}
+.menu-icon img{
+    width: 100%;
+    height: 100%;
+}
+.menu-icon{
+    display: none;
+    width: 4%;
+}

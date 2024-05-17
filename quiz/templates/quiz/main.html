@@ -1,0 +1,106 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/mains.css' %}">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/mob.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>main</title>
+</head>
+<header>
+
+    <nav>
+        <div class="logo">
+            {% for Room in Rooms %}
+                <a href="{% url 'quiz' group_slug=Room.group.slug %}">
+            {% endfor %}
+            <img src="{% static 'img/logo.png' %}" alt=""></a>
+        </div>
+        <div class="menu-icon">
+            <img src="{% static 'img/hamburger.png' %}" alt="Menu">
+        </div>
+
+        <ul>
+            {%if user.is_staff%}
+            <li><a href="{% url 'form' %}">Создание теста</a></li>
+            {% endif %}
+            <li><a href="#">История</a></li>
+            
+            <li><a href="{% url 'cabin' UUID %}" class="none">Профиль <img src="{{ User.avatar.url }}" alt="" class="avatars"  alt="Avatar"></a></li>
+            <li><a href="{% url 'cabin' UUID %}" class="none-mob"><img src="{{ User.avatar.url }}" alt="" class="avatars"  alt="Avatar"></a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">Выход</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+<main>
+    <div class="content">
+        <h1>ПРОЙТИ ТЕСТИРОВАНИЕ</h1>
+        {%if Rooms%}
+            <div class="card-active-items">
+                {%for Room in Rooms%}
+                <div class="card-active-item">
+                    <h3>{{Room.quiz.title}}</h3>
+                    <span>Начало:</span><p>{{Room.t_start|time:"H:i:s"}}</p><!--  сюда переменную что бы изменить время -->
+                    <div class="timer"></div>
+                    <div class="btn-card"><a href="{% url 'Room' group_slug=Room.group.slug token=Room.token %}">Начать</a></div>
+                </div>        
+                {% endfor %}
+            </div>
+        {%else%}
+        <h3 class="no">Тестов нет</h3>
+        {%endif%}
+        <h1>ИСТОРИЯ ТЕСТОВ</h1>
+        <div class="card-list">
+            {% if history %}
+                {% for item in history|slice:":6" %}
+                
+                    <div class="card-item">
+                        <h3>{{ item.quiz.title }}</h3>
+                        <p>Место:{{ item.position }}</p>
+                        <span>Был пройден:</span><p>{{ item.created }}</p><!--  замените на поле, содержащее время -->
+                        <div class="timer"></div>
+                        <div class="btn-card"><a href="#">Подробнее</a></div>
+                    </div>
+                {% endfor %}
+                {% if history|length > 6 %}
+                    <div class="btn-card"><a href="#">Показать все</a></div>
+                {% endif %}
+            {% else %}
+                <h3 class="no">Истории нет</h3>
+            {% endif %}
+        </div>
+    </div>
+</main>
+<footer>
+    <div class="contents">
+        <div class="logo"><img src="{% static 'img/logo.png' %}" alt=""></div>
+        <p>ROOT</p>
+    </div>
+</footer>
+<script src="{% static 'js/cabin.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+window.addEventListener('load', (event) => {
+    const activeItems = document.querySelectorAll('.card-active-item');
+
+    if (activeItems.length === 1) {
+        activeItems[0].style.width = '50%';
+    } else if (activeItems.length === 2) {
+        activeItems.forEach(item => {
+            item.style.width = '45%'; 
+        });
+    } else {
+        activeItems.forEach(item => {
+            item.style.width = '30%';
+        });
+    }
+
+ 
+});
+</script>
+    

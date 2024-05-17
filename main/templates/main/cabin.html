@@ -1,0 +1,117 @@
+{% load static %}
+<title>profile</title>
+<link rel="stylesheet" href="{% static 'css/cabin.css' %}">
+<link rel="icon" href="{% static 'img/favicon.svg' %}">
+<header>
+    <nav>
+        <div class="logo">
+            {% for Room in Rooms %}
+                <a href="{% url 'quiz' group_slug=Room.group.slug %}">
+            {% endfor %}
+            <img src="{% static 'img/logo.png' %}" alt=""></a>
+            
+        </div>
+        <div class="menu-icon">
+            <img src="{% static 'img/hamburger.png' %}" alt="Menu">
+        </div>
+        <ul>
+            {%if user.is_staff%}
+            <li><a href="{% url 'form' %}">Создание теста</a></li>
+            {% endif %}
+            <li><a href="{% url 'quiz' posetitel.group.slug %}">Тесты</a></li>
+            <li><a href="{% url 'quiz' group %}">История </a></li>
+            {%if user != posetitel%}
+                <li><a href="{% url 'cabin' posetitel.UUID.UUID %}">Профиль <img class="avatars" src="{{ posetitel.avatar.url }}"  alt="Avatar" id="avatar-image"></a></li>
+            {% else %}
+                <li><a href="{% url 'cabin' user.UUID.UUID %}">Профиль <img class="avatars" src="{{ user.avatar.url }}"  alt="Avatar" id="avatar-image"></a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Выход</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+<main>
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    <div class="content">
+        <h1>Личный кабинет</h1>
+        <div class="user-card">
+            <div class="user-avatar">
+                {%if user.avatar%}
+                    <img src="{{ user.avatar.url }}" alt="Avatar" id="avatar-image"> 
+                {%else%}
+                    <img src="{% static 'img/avatar.png' %}" alt="Avatar" id="avatar-image"> 
+                {%endif%}
+                {% if user == request.user %}
+                <form id="avatar-form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="file" name="avatar" id="id_avatar" accept="image/*"  onchange="submitForm()">
+                </form>   
+                {% endif %}             
+            </div>
+            <div class="user-info">
+                <h3>Фамилия Имя Отчество</h3>
+                <p>{{ user.last_name }} {{ user.first_name }} {{ user.patronymic }}</p>
+                <h3>Email</h3>
+                {% if user == request.user %}
+                <p>{{ user.email }}</p>
+                {% else %}
+                <p>Скрыто</p>
+                {% endif %}
+                <h3>Группа</h3>
+                <p>{{ user.group }}</p>
+                <h3>Курс</h3>
+                <p>{{ user.course }}</p>
+            </div>
+        </div>
+        
+        <h3>Таблица лидеров</h3>
+        <div id="leaderboard">
+            <div class="leaderboard-header">
+                <h2>ТАБЛИЦА ЛИДЕРОВ</h2>
+                <div class="group-stream-buttons">
+                    <button class="group-button active" onclick="showGroup()">Группа</button>
+                    <button class="stream-button" onclick="showStream()">Поток</button>
+                </div>
+            </div>
+            <div class="leaderboard-body" id="leaderboard-body">
+                <!-- Вставьте данные таблицы лидеров здесь -->
+            </div>
+        </div>
+        <h3>Рейтинг</h3>
+        <div class="raiting">
+            <div class="raiting-title"><h4>Рейтинг</h4></div>
+            <div class="rating-conten">
+                <div class="rating-conten-item">
+                    <p>{{ user_group_rank }}</p>
+                    <span>Место в группе</span>
+                </div>
+                <div class="rating-conten-item">
+                    <p>{{ current_user_rank }}</p>
+                    <span>Место на потоке</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main data-leaderboard="{{ leaderboard|safe }}" data-current-user-rank="{{ current_user_rank }}" data-user-group-leaders="{{ user_group_leaders|safe }}" data-user-group-rank="{{ user_group_rank }}"> 
+</main> 
+<footer>
+    <div class="contents">
+        <div class="logo"><img src="{% static 'img/logo.png' %}" alt=""></div>
+        <p>ROOT</p>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/cabin.js' %}"></script> 
+
+<script>
+    function submitForm() {
+        console.log("Form submit button clicked");
+        document.getElementById("avatar-form").submit();
+        console.log("Form submitted");
+}
+
+</script>
